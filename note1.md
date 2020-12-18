@@ -75,3 +75,40 @@ xx毫秒后失效 `psetex key milliseconds value`
 **1. 基本操作**
 - 添加修改数据 `hset key field value`
 - 获取数据
+   - 单个获取`hget key field`
+   - 多个获取`hgetall key`
+   - 删除数据`hdel key field1 [field2]`
+- 添加/修改多个数据 `hmset key field1 value1 field2 value2 ...`
+- 获取多个数据`hmget key field1 field2 ...`
+- 获取哈希表中字段的数量`hlen key` (有多少个field)
+- 获取哈希表中是否存在指定的字段`hexists key field`
+
+**2. 扩展操作**
+- 获取哈希表中所有的字段名或字段值 `hkeys key` / `hvals key`
+- 设置指定字段的数值数据增加指定范围的值
+`hincrby key field increment` / `hincrbyfloat key field increment`
+
+######**Tips**
+- hash类型下的value只能存储字符串，不允许存储其他数据类型，不存在嵌套现象。
+- 每个hash可以存储2^32 - 1个键值对
+- hgetall可以获取全部属性，如果内部field过多，遍历整体数据效率就会很低，有可能成为数据访问瓶颈
+
+#### list
+
+- 数据存储要求：存储多个数据，并对数据进入存储空间的顺序进行区分
+- 需要的存储结构：一个存储空间保存多个数据，且通过数据可以体现进入顺序
+- list类型：保存多个数据，底层使用双向链表存储结构实现
+
+**1. 基本操作**
+- 添加修改数据 `lpush key value1 [value2] ...` / `rpush key value1 [value2]... `
+- 获取数据 `lrange key start stop` (0,-1)则查看全部
+- 获取索引的数据`lindex key index`
+- 获取长度`llen key`
+- 获取并移除数据 `lpop/rpop key` 
+
+**2. 扩展操作**
+- 移除指定数据`lrem key count value` (count 为移除多少个 因为可存在重复)
+   - count > 0 从表头删到表尾
+   - count < 0 从表尾删到表头
+   - count = 0 表里的全删
+
